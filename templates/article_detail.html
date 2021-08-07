@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block content%}
+        <div class="article-entry">
+            <h2> {{ object.title }} </h2>
+            <p>by {{ object.author }} | {{ object.date }}</p>
+            <p>{{ object.body }}</p>
+        </div>
+
+        <div class="comments">
+            {% for comment in comments %}
+                <p>{{ comment.comment }}</p>
+            {% endfor %}
+        </div>
+        {% if new_comment %}
+            <h2>New comment has been added</h2>
+        {% else %}
+
+            <h2>Add new comment</h2>
+            <form action="." method="post">
+                {% csrf_token %}
+                {{ comment_form.as_p }}
+                <button type="submit">Add new comment</button>
+            </form>
+
+        {% endif %}
+
+        <p><a href="{% url 'article_edit' object.pk %}">Edit</a> | <a href="{% url 'article_delete' object.pk %}">Delete</a></p>
+
+        <p>Back to <a href="{% url 'article_list' %}">All Articles</a></p>
+{% endblock content %}
